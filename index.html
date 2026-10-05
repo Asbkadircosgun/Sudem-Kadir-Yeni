@@ -45,8 +45,8 @@ button:active{transform:scale(.98)}
 @media(max-width:520px){.page{padding:14px}.card{padding:28px 18px}.puzzle{gap:2px;border-width:3px;border-radius:15px}.tile.selected{outline-width:2px}}
 </style>
 </head>
-<body>
-<audio id="siteMusic" preload="auto" loop><source src="music.mp4" type="audio/mp4"></audio>
+<body><audio id="siteMusic" src="music.mp4" preload="auto" loop></audio>
+
 
 <section id="login" class="page">
   <span class="float f1">🌸</span><span class="float f2">🌺</span><span class="float f3">🌷</span><span class="float f4">🌼</span>
@@ -101,7 +101,14 @@ button:active{transform:scale(.98)}
 <script>
 const PASS="1204";
 function hideAll(){
-const siteMusic=document.getElementById("siteMusic"); if(siteMusic){siteMusic.play().catch(()=>{});}["login","intro","puzzlePage","storyPage"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
+const siteMusic=document.getElementById("siteMusic");
+if(siteMusic){
+  siteMusic.volume=1;
+  siteMusic.currentTime=0;
+  siteMusic.play().catch(()=>{});
+}
+
+["login","intro","puzzlePage","storyPage"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
 function login(){
   const p=document.getElementById("password").value;
   const e=document.getElementById("error");
