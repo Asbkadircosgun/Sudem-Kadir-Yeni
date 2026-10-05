@@ -45,7 +45,8 @@ button:active{transform:scale(.98)}
 @media(max-width:520px){.page{padding:14px}.card{padding:28px 18px}.puzzle{gap:2px;border-width:3px;border-radius:15px}.tile.selected{outline-width:2px}}
 </style>
 </head>
-<body><audio id="siteMusic" src="music.mp4" preload="auto" loop></audio>
+<body>
+<audio id="siteMusic" src="music.mp3" preload="auto" loop></audio>
 
 
 <section id="login" class="page">
@@ -83,8 +84,7 @@ button:active{transform:scale(.98)}
 </section>
 
 <section id="storyPage" class="page hidden">
-  <span class="float f1">🌸</span><span class="float f2">🌺</span>
-  <span class="float f3">🌷</span><span class="float f4">🌼</span>
+  <span class="float f1">🌸</span><span class="float f2">🌺</span><span class="float f3">🌷</span><span class="float f4">🌼</span>
   <div class="card story">
     <div class="heart">❤️</div>
     <div class="smallcaps">CENNET KOKULUM</div>
@@ -92,9 +92,6 @@ button:active{transform:scale(.98)}
     <p>Zamanın nasıl bu kadar hızlı aktığına, seninle geçen her anın nasıl hem bir ömür gibi hissettirip hem de göz açıp kapayıncaya kadar bitiverdiğine inanamıyorum.</p>
     <p>Seninle tanıştığım o ilk anı, bana o ilk bakışını dün gibi hatırlıyorum. O gün, hayatımın geri kalanının çok daha parlak ve anlamlı olacağını hissetmiştim; yanılmamışım.</p>
     <p>Sen benim sadece sevgilim değil, en yakın arkadaşım, sırdaşım, fırtınalı günlerdeki sığınağım ve en huzurlu yuvam oldun. Birlikte güldüğümüzde dünyayı titreten kahkahalarımız, kelimelere ihtiyaç duymadan sessizce yan yana durduğumuzdaki o derin bağ... Hepsi benim için paha biçilemez.</p>
-    <audio id="loveMusic" controls preload="auto" style="width:100%;margin-top:18px">
-      <source src="music.mp4" type="audio/mp4">
-    </audio>
   </div>
 </section>
 
@@ -112,8 +109,19 @@ if(siteMusic){
 function login(){
   const p=document.getElementById("password").value;
   const e=document.getElementById("error");
-  if(p===PASS){e.textContent="";hideAll();document.getElementById("intro").classList.remove("hidden");}
-  else e.textContent="Şifre yanlış, tekrar dene ❤️";
+  if(p===PASS){
+    e.textContent="";
+    const music=document.getElementById("siteMusic");
+    if(music){
+      music.volume=1;
+      music.currentTime=0;
+      music.play().catch(()=>{});
+    }
+    hideAll();
+    document.getElementById("intro").classList.remove("hidden");
+  } else {
+    e.textContent="Şifre yanlış, tekrar dene ❤️";
+  }
 }
 document.getElementById("password").addEventListener("keydown",e=>{if(e.key==="Enter")login()});
 
