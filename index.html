@@ -46,6 +46,7 @@ button:active{transform:scale(.98)}
 </style>
 </head>
 <body>
+<audio id="siteMusic" preload="auto" loop><source src="music.mp4" type="audio/mp4"></audio>
 
 <section id="login" class="page">
   <span class="float f1">🌸</span><span class="float f2">🌺</span><span class="float f3">🌷</span><span class="float f4">🌼</span>
@@ -82,19 +83,25 @@ button:active{transform:scale(.98)}
 </section>
 
 <section id="storyPage" class="page hidden">
-  <span class="float f1">🌸</span><span class="float f2">🌺</span><span class="float f3">🌷</span><span class="float f4">🌼</span>
+  <span class="float f1">🌸</span><span class="float f2">🌺</span>
+  <span class="float f3">🌷</span><span class="float f4">🌼</span>
   <div class="card story">
     <div class="heart">❤️</div>
-    <div class="smallcaps">BİZİM HİKÂYEMİZ</div>
-    <h2>Her parçası ayrı güzel,<br>birlikte ise bambaşka…</h2>
-    <p>Bu küçük dünyadaki her parça, birlikte biriktirdiğimiz güzel anıları hatırlatsın. İyi ki varsın Sudem. ❤️</p>
-    <p>Ve hikâyemizin daha yazılacak çok sayfası var…</p>
+    <div class="smallcaps">CENNET KOKULUM</div>
+    <h2>Hayatımın en güzeli, iyi ki'si</h2>
+    <p>Zamanın nasıl bu kadar hızlı aktığına, seninle geçen her anın nasıl hem bir ömür gibi hissettirip hem de göz açıp kapayıncaya kadar bitiverdiğine inanamıyorum.</p>
+    <p>Seninle tanıştığım o ilk anı, bana o ilk bakışını dün gibi hatırlıyorum. O gün, hayatımın geri kalanının çok daha parlak ve anlamlı olacağını hissetmiştim; yanılmamışım.</p>
+    <p>Sen benim sadece sevgilim değil, en yakın arkadaşım, sırdaşım, fırtınalı günlerdeki sığınağım ve en huzurlu yuvam oldun. Birlikte güldüğümüzde dünyayı titreten kahkahalarımız, kelimelere ihtiyaç duymadan sessizce yan yana durduğumuzdaki o derin bağ... Hepsi benim için paha biçilemez.</p>
+    <audio id="loveMusic" controls preload="auto" style="width:100%;margin-top:18px">
+      <source src="music.mp4" type="audio/mp4">
+    </audio>
   </div>
 </section>
 
 <script>
 const PASS="1204";
-function hideAll(){["login","intro","puzzlePage","storyPage"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
+function hideAll(){
+const siteMusic=document.getElementById("siteMusic"); if(siteMusic){siteMusic.play().catch(()=>{});}["login","intro","puzzlePage","storyPage"].forEach(id=>document.getElementById(id).classList.add("hidden"))}
 function login(){
   const p=document.getElementById("password").value;
   const e=document.getElementById("error");
@@ -181,7 +188,12 @@ function updateProgress(){
   order.forEach((v,i)=>{if(v===i)correct++});
   document.getElementById("progress").textContent=`${correct} / 16 doğru parça`;
   if(correct===16){
-    setTimeout(()=>{hideAll();document.getElementById("storyPage").classList.remove("hidden")},700);
+    setTimeout(()=>{
+  hideAll();
+  document.getElementById("storyPage").classList.remove("hidden");
+  const music=document.getElementById("loveMusic");
+  if(music){ music.currentTime=0; music.play().catch(()=>{}); }
+},700);
   }
 }
 </script>
