@@ -310,14 +310,16 @@ function openSong(n){
   if(err) err.style.display='none';
   video.pause();
   video.src=SONGS[n].src;
-  video.preload='metadata';
+  video.preload='auto';
   video.playsInline=true;
+  video.setAttribute('playsinline','');
+  video.setAttribute('webkit-playsinline','');
   video.muted=false;
   document.getElementById('videoTitle').textContent=SONGS[n].title;
   modal.classList.add('open');
-  video.load();
-  // Play directly from the user's tap. On iPhone, waiting for canplay can lose
-  // the user-gesture permission needed for sound playback.
+  // iPhone Safari: do NOT call video.load() here; it can break the
+  // user-tap permission before play(). The video source is already
+  // embedded in this page, so play() is requested immediately.
   const playPromise=video.play();
   if(playPromise && typeof playPromise.catch==='function'){
     playPromise.catch(()=>{
