@@ -172,7 +172,7 @@ body{overflow-x:hidden}
     <p class="type-line">Zamanın nasıl bu kadar hızlı aktığına, seninle geçen her anın nasıl hem bir ömür gibi hissettirip hem de göz açıp kapayıncaya kadar bitiverdiğine inanamıyorum.</p>
     <p class="type-line">Seninle tanıştığım o ilk anı, bana o ilk bakışını dün gibi hatırlıyorum. O gün, hayatımın geri kalanının çok daha parlak ve anlamlı olacağını hissetmiştim; yanılmamışım.</p>
     <p class="type-line">Sen benim sadece sevgilim değil, en yakın arkadaşım, sırdaşım, fırtınalı günlerdeki sığınağım ve en huzurlu yuvam oldun. Birlikte güldüğümüzde dünyayı titreten kahkahalarımız, kelimelere ihtiyaç duymadan sessizce yan yana durduğumuzdaki o derin bağ... Hepsi benim için paha biçilemez.</p>
-    <button onclick="openTimer()">seninle geçen zamana bak ♡</button>
+    <button onclick="openMemories()">anı defterimize bak ♡</button>
   </div>
 </section>
 
@@ -291,6 +291,7 @@ function updateProgress(){
         <span class="song-play">▶</span>
       </button>
     </div>
+    <button class="timer-next" onclick="openTimer()">sayacımıza geç ♡</button>
   </div>
 </section>
 
@@ -308,7 +309,7 @@ function updateProgress(){
     <p class="timer-note">Seni bu kadar süredir seviyorum ve<br>bunun tek bir saniyesine dahi pişman olmadım. ♡</p>
     <div class="timer-buttons">
       <button class="timer-back" onclick="backToStory()">← geri</button>
-      <button class="timer-next" onclick="openMemories()">anı defterimize geç ♡</button>
+      
     </div>
   </div>
 </section>
@@ -369,19 +370,24 @@ function updateLoveTimer(){
   if(sec)sec.textContent=String(seconds).padStart(2,'0');
 }
 function openTimer(){
-  document.getElementById('playlistPage').classList.remove('hidden');
+  document.getElementById('storyPage').classList.add('hidden');
+  document.getElementById('memoryPage').classList.add('hidden');
+  document.getElementById('playlistPage').classList.add('hidden');
   document.getElementById('timerPage').classList.remove('hidden');
   updateLoveTimer();
   if(!timerStarted){timerStarted=true;setInterval(updateLoveTimer,1000);}
-  setTimeout(()=>scrollToId('playlistPage'),120);
+  setTimeout(()=>scrollToId('timerPage'),120);
 }
 function backToStory(){document.getElementById('timerPage').classList.add('hidden');document.getElementById('playlistPage').classList.add('hidden');scrollToId('storyPage');}
 let memoryIndex=1;
 function renderMemory(){document.querySelectorAll('.book-page').forEach((p,i)=>p.classList.toggle('active',i===memoryIndex-1));document.getElementById('memoryCount').textContent=memoryIndex+' / 5';}
 function nextMemory(){if(memoryIndex<5){memoryIndex++;renderMemory()}else{memoryIndex=1;renderMemory()}}
 function prevMemory(){if(memoryIndex>1){memoryIndex--;renderMemory()}else{memoryIndex=5;renderMemory()}}
-function openMemories(){document.getElementById('memoryPage').classList.remove('hidden');setTimeout(()=>scrollToId('memoryPage'),120);renderMemory();}
+function openMemories(){document.getElementById('storyPage').classList.add('hidden');document.getElementById('playlistPage').classList.add('hidden');document.getElementById('timerPage').classList.add('hidden');document.getElementById('memoryPage').classList.remove('hidden');setTimeout(()=>scrollToId('memoryPage'),120);renderMemory();}
 function openPlaylist(){
+  document.getElementById('storyPage').classList.add('hidden');
+  document.getElementById('memoryPage').classList.add('hidden');
+  document.getElementById('timerPage').classList.add('hidden');
   document.getElementById('playlistPage').classList.remove('hidden');
   setTimeout(()=>scrollToId('playlistPage'),120);
 }
