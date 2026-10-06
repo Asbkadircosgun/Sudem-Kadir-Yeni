@@ -275,9 +275,9 @@ function updateProgress(){
 <div id="videoModal" class="video-modal" onclick="if(event.target===this)closeSong()">
   <div class="video-box">
     <button class="video-close" onclick="closeSong()" aria-label="Kapat">×</button>
-    <video id="video1" controls playsinline webkit-playsinline preload="auto" src="./deniz.mp4" style="display:none"></video>
-    <video id="video2" controls playsinline webkit-playsinline preload="auto" src="./yalin.mp4" style="display:none"></video>
-    <div id="videoError" style="display:none;margin:10px 6px 0;color:#9a6b7c;font-family:Arial,sans-serif;font-size:13px">Video yüklenemedi. Oynat düğmesine dokunmayı dene.</div>
+    <video id="video1" controls playsinline webkit-playsinline preload="metadata" style="display:none"><source src="./deniz.mp4" type="video/mp4"></video>
+    <video id="video2" controls playsinline webkit-playsinline preload="metadata" style="display:none"><source src="./yalin.mp4" type="video/mp4"></video>
+    
     <div id="videoTitle" class="video-title"></div>
     <p class="video-note">Videoyu kapatınca ana müzik devam eder.</p>
   </div>
@@ -315,10 +315,9 @@ function openSong(n){
   video.style.display='block';
   document.getElementById('videoTitle').textContent=SONGS[n].title;
   modal.classList.add('open');
-  // The source is present in the HTML before the tap, which is more reliable on iPhone Safari.
-  const p=video.play();
-  if(p && p.catch) p.catch(()=>{ if(err) err.style.display='block'; });
-  video.onerror=()=>{if(err) err.style.display='block';};
+  // iPhone Safari can reject script-triggered video playback in a modal.
+  // Leave playback to the native video control so the user can tap ▶ directly.
+  video.load();
 }
 function closeSong(){
   const modal=document.getElementById('videoModal');
