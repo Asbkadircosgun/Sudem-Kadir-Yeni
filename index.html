@@ -275,7 +275,9 @@ function updateProgress(){
 <div id="videoModal" class="video-modal" onclick="if(event.target===this)closeSong()">
   <div class="video-box">
     <button class="video-close" onclick="closeSong()" aria-label="Kapat">×</button>
-    <video id="songVideo" controls playsinline preload="auto" webkit-playsinline></video><div id="videoError" style="display:none;margin:10px 6px 0;color:#9a6b7c;font-family:Arial,sans-serif;font-size:13px">Video yüklenemedi. Bir kez oynat düğmesine dokunmayı dene.</div>
+    <video id="video1" controls playsinline webkit-playsinline preload="auto" src="./deniz.mp4" style="display:none"></video>
+    <video id="video2" controls playsinline webkit-playsinline preload="auto" src="./yalin.mp4" style="display:none"></video>
+    <div id="videoError" style="display:none;margin:10px 6px 0;color:#9a6b7c;font-family:Arial,sans-serif;font-size:13px">Video yüklenemedi. Oynat düğmesine dokunmayı dene.</div>
     <div id="videoTitle" class="video-title"></div>
     <p class="video-note">Videoyu kapatınca ana müzik devam eder.</p>
   </div>
@@ -297,48 +299,32 @@ function openPlaylist(){
 }
 let playlistWasPlaying=false;
 const SONGS={
-  1:{src:'deniz.mp4',title:'Aşk — Deniz Seki'},
-  2:{src:'yalin.mp4',title:'Sesinde Aşk Var — Yalın'}
+  1:{id:'video1',title:'Aşk — Deniz Seki'},
+  2:{id:'video2',title:'Sesinde Aşk Var — Yalın'}
 };
 function openSong(n){
   const modal=document.getElementById('videoModal');
-  const video=document.getElementById('songVideo');
   const music=document.getElementById('siteMusic');
   playlistWasPlaying=!!(music && !music.paused);
   if(music) music.pause();
   const err=document.getElementById('videoError');
   if(err) err.style.display='none';
-  video.pause();
-  video.src=SONGS[n].src;
-  video.preload='auto';
-  video.playsInline=true;
-  video.setAttribute('playsinline','');
-  video.setAttribute('webkit-playsinline','');
-  video.muted=false;
+  const v1=document.getElementById('video1'), v2=document.getElementById('video2');
+  [v1,v2].forEach(v=>{v.pause();v.style.display='none';v.currentTime=0;});
+  const video=document.getElementById(SONGS[n].id);
+  video.style.display='block';
   document.getElementById('videoTitle').textContent=SONGS[n].title;
   modal.classList.add('open');
-  // iPhone Safari: do NOT call video.load() here; it can break the
-  // user-tap permission before play(). The video source is already
-  // embedded in this page, so play() is requested immediately.
-  const playPromise=video.play();
-  if(playPromise && typeof playPromise.catch==='function'){
-    playPromise.catch(()=>{
-      if(err) err.style.display='block';
-    });
-  }
-  video.addEventListener('error', ()=>{ if(err) err.style.display='block'; }, {once:true});
+  // The source is present in the HTML before the tap, which is more reliable on iPhone Safari.
+  const p=video.play();
+  if(p && p.catch) p.catch(()=>{ if(err) err.style.display='block'; });
+  video.onerror=()=>{if(err) err.style.display='block';};
 }
 function closeSong(){
   const modal=document.getElementById('videoModal');
-  const video=document.getElementById('songVideo');
-  video.pause();
-  video.removeAttribute('src');
-  video.load();
+  [document.getElementById('video1'),document.getElementById('video2')].forEach(v=>{v.pause();v.style.display='none';});
   modal.classList.remove('open');
-  if(playlistWasPlaying){
-    const music=document.getElementById('siteMusic');
-    if(music) music.play().catch(()=>{});
-  }
+  if(playlistWasPlaying){const music=document.getElementById('siteMusic');if(music) music.play().catch(()=>{});}
   playlistWasPlaying=false;
 }
 </script>
